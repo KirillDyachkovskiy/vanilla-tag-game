@@ -6,32 +6,36 @@ import matrixGetNeighs from "./utils/matrix/matrixGetNeighs";
 import swapItemsPosition from "./utils/swapItemsPosition";
 import matrixIsSorted from "./utils/matrix/matrixIsSorted";
 import {TPosition} from "./types/position";
+import getRandomElem from "./utils/array/getRandomElem";
 
-export const field = document.querySelector<HTMLDivElement>('.field');
-export const fieldItems = Array.from(document.querySelectorAll<HTMLButtonElement>('.field__item'));
+const FIELD = document.querySelector<HTMLDivElement>('.field');
+const FIELD_ITEMS = Array.from(document.querySelectorAll<HTMLButtonElement>('.field__item'));
+
+const SHUFFLE_BUTTON = document.querySelector<HTMLButtonElement>('.shuffle');
+const SWAPS_COUNT = 50;
 
 function main() {
-  if (fieldItems.length !== 16) throw Error('Должно быть 16 элементов');
+  if (FIELD_ITEMS.length !== 16) throw Error('Должно быть 16 элементов');
 
-  const values = fieldItems.map((elem) => Number(elem.innerHTML));
+  const values = FIELD_ITEMS.map((elem) => Number(elem.innerHTML));
   const matrix = splitToChunks(values, 4);
 
-  setItemsPosition(matrix);
+  setItemsPosition(matrix, FIELD_ITEMS);
 
   let hiddenPosition = matrixFindIndex(matrix, 16);
 
   const makeMove = (newPos: TPosition) => {
     swapItemsPosition(matrix, hiddenPosition, newPos);
-    setItemsPosition(matrix);
+    setItemsPosition(matrix, FIELD_ITEMS);
 
     hiddenPosition = newPos;
 
-    if (field) {
-      field.dataset.solved = String(matrixIsSorted(matrix));
+    if (FIELD) {
+      FIELD.dataset.solved = String(matrixIsSorted(matrix));
     }
   }
 
-  field?.addEventListener('click', (event: MouseEvent) => {
+  FIELD?.addEventListener('click', (event: MouseEvent) => {
     const clickedButton = (event.target as HTMLButtonElement).closest('button');
     const clickedItem = Number(clickedButton?.innerHTML);
 
@@ -66,6 +70,33 @@ function main() {
     if (matrix[neighPosition.row]?.[neighPosition.col] === undefined) return;
 
     makeMove(neighPosition);
+  });
+
+  let counter = 0;
+  let interval: NodeJS.Timer;
+
+  SHUFFLE_BUTTON?.addEventListener('click', () => {
+    counter = 0;
+    clearInterval(interval);
+    let lastPosition = { col: -1, row: -1 };
+
+    interval = setInterval(() => {
+      const neighs = matrixGetNeighs(matrix, hiddenPosition);
+      const randomNeigh = getRandomElem(neighs);
+      let position = randomNeigh[1];
+
+      if (position.row === lastPosition.row && position.col === lastPosition.col) {
+        position = getRandomElem(neighs.filter(neigh => neigh !== randomNeigh))[1];
+      }
+
+      lastPosition = hiddenPosition;
+      makeMove(position);
+
+      counter++;
+      if (counter > SWAPS_COUNT) {
+        clearInterval(interval);
+      }
+    }, 100)
   })
 }
 
