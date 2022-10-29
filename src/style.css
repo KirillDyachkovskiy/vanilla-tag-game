@@ -1,0 +1,60 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  text-align: center;
+  margin: 0;
+}
+
+button {
+  border: 0;
+  outline: none;
+  padding: 0;
+}
+
+.field {
+  margin-inline: auto;
+  width: 400px;
+  height: 400px;
+  position: relative;
+  border: 2px solid chocolate;
+}
+
+.field__item {
+  border: 2px solid brown;
+  font-size: 2rem;
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  top: 0;
+  left: 0;
+  background-color: chocolate;
+  color: white;
+  transition: 200ms;
+}
+
+.field__item_empty {
+  opacity: 0;
+}
+
+.shuffle {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  background-color: chocolate;
+  color: white;
+  padding: 1rem 2rem;
+}
