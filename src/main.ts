@@ -12,7 +12,7 @@ const FIELD = document.querySelector<HTMLDivElement>('.field');
 const FIELD_ITEMS = Array.from(document.querySelectorAll<HTMLButtonElement>('.field__item'));
 
 const SHUFFLE_BUTTON = document.querySelector<HTMLButtonElement>('.shuffle');
-const SWAPS_COUNT = 50;
+const SWAPS_COUNT = 100;
 
 function main() {
   if (FIELD_ITEMS.length !== 16) throw Error('Должно быть 16 элементов');
@@ -96,7 +96,7 @@ function main() {
       if (counter > SWAPS_COUNT) {
         clearInterval(interval);
       }
-    }, 100)
+    }, 60)
   })
 }
 
