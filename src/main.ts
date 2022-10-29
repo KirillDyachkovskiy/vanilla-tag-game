@@ -5,8 +5,9 @@ import matrixFindIndex from "./utils/matrix/matrixFindIndex";
 import matrixGetNeighs from "./utils/matrix/matrixGetNeighs";
 import swapItemsPosition from "./utils/swapItemsPosition";
 import matrixIsSorted from "./utils/matrix/matrixIsSorted";
+import {TPosition} from "./types/position";
 
-const field = document.querySelector<HTMLDivElement>('.field');
+export const field = document.querySelector<HTMLDivElement>('.field');
 export const fieldItems = Array.from(document.querySelectorAll<HTMLButtonElement>('.field__item'));
 
 function main() {
@@ -19,6 +20,17 @@ function main() {
 
   let hiddenPosition = matrixFindIndex(matrix, 16);
 
+  const makeMove = (newPos: TPosition) => {
+    swapItemsPosition(matrix, hiddenPosition, newPos);
+    setItemsPosition(matrix);
+
+    hiddenPosition = newPos;
+
+    if (field) {
+      field.dataset.solved = String(matrixIsSorted(matrix));
+    }
+  }
+
   field?.addEventListener('click', (event: MouseEvent) => {
     const clickedButton = (event.target as HTMLButtonElement).closest('button');
     const clickedItem = Number(clickedButton?.innerHTML);
@@ -30,12 +42,30 @@ function main() {
 
     const neighPosition = neigh[1];
 
-    swapItemsPosition(matrix, hiddenPosition, neighPosition);
-    setItemsPosition(matrix);
+    makeMove(neighPosition);
+  });
 
-    hiddenPosition = neighPosition;
+  window.addEventListener('keydown', (event: KeyboardEvent) => {
+    const neighPosition = { ...hiddenPosition };
 
-    field.dataset.solved = String(matrixIsSorted(matrix));
+    switch (event.key) {
+      case 'ArrowUp':
+        neighPosition.col++;
+        break;
+      case 'ArrowDown':
+        neighPosition.col--;
+        break;
+      case 'ArrowLeft':
+        neighPosition.row++;
+        break;
+      case 'ArrowRight':
+        neighPosition.row--;
+        break;
+    }
+
+    if (matrix[neighPosition.row]?.[neighPosition.col] === undefined) return;
+
+    makeMove(neighPosition);
   })
 }
 

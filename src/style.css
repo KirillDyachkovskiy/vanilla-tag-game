@@ -65,4 +65,13 @@ button {
   background-color: chocolate;
   color: white;
   padding: 1rem 2rem;
+  transition: 200ms;
+}
+
+.shuffle:active {
+  scale: .9;
+}
+
+.shuffle:hover, .shuffle:focus-visible {
+  background-color: goldenrod;
 }
