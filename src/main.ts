@@ -4,6 +4,7 @@ import setItemsPosition from "./utils/setItemsPosition";
 import matrixFindIndex from "./utils/matrix/matrixFindIndex";
 import matrixGetNeighs from "./utils/matrix/matrixGetNeighs";
 import swapItemsPosition from "./utils/swapItemsPosition";
+import matrixIsSorted from "./utils/matrix/matrixIsSorted";
 
 const field = document.querySelector<HTMLDivElement>('.field');
 export const fieldItems = Array.from(document.querySelectorAll<HTMLButtonElement>('.field__item'));
@@ -33,6 +34,8 @@ function main() {
     setItemsPosition(matrix);
 
     hiddenPosition = neighPosition;
+
+    field.dataset.solved = String(matrixIsSorted(matrix));
   })
 }
 

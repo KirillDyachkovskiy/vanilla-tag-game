@@ -34,6 +34,14 @@ button {
   border: 2px solid chocolate;
 }
 
+.field[data-solved='true'] {
+  border-color: goldenrod;
+}
+
+.field[data-solved='true'] .field__item {
+  background-color: goldenrod;
+}
+
 .field__item {
   border: 2px solid brown;
   font-size: 2rem;
